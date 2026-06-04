@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赵尔波 | AI驱动的复合型研究人才</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: rgba(9, 9, 11, 0.88);
+            --bg-panel: rgba(255, 255, 255, 0.02);
+            --bg-panel-strong: rgba(255, 255, 255, 0.03);
+            --line-soft: rgba(255, 255, 255, 0.08);
+            --line-strong: #27272a;
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1aa;
+            --text-muted: #888888;
+            --accent: #00e599;
+            --accent-soft: rgba(0, 229, 153, 0.08);
+            --accent-blue: #10b981;
+            --accent-violet: #10b981;
+            --glow-cyan: rgba(0, 229, 153, 0.16);
+            --glow-blue: rgba(16, 185, 129, 0.14);
+            --forcefield-stroke: rgba(255, 255, 255, 0.1);
+            --forcefield-stroke-accent: rgba(0, 229, 153, 0.16);
+            --forcefield-glow: 0 0 0 1px rgba(0, 229, 153, 0.045), 0 0 22px rgba(0, 229, 153, 0.06), inset 0 0 24px rgba(0, 229, 153, 0.018);
+            --font-display: "Inter", "Noto Sans SC", sans-serif;
+            --font-body: "Inter", "Noto Sans SC", sans-serif;
+            --title-size: clamp(2.5rem, 8vw, 5rem);
+            --h2-size: clamp(1.4rem, 3.4vw, 2.8rem);
+            --h3-size: clamp(1rem, 1.8vw, 1.45rem);
+            --body-size: clamp(0.82rem, 1.28vw, 1.05rem);
+            --small-size: clamp(0.72rem, 0.95vw, 0.88rem);
+            --slide-padding: clamp(1.1rem, 3.2vw, 3rem);
+            --content-gap: clamp(0.9rem, 1.7vw, 1.6rem);
+            --element-gap: clamp(0.55rem, 1vw, 0.95rem);
+            --nav-height: 64px;
+            --radius-xl: clamp(1.1rem, 2vw, 2rem);
+            --radius-lg: clamp(0.9rem, 1.5vw, 1.3rem);
+            --radius-md: clamp(0.75rem, 1vw, 1rem);
+            --duration-normal: 0.7s;
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            background: #000000;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        .slide {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-height: 100%;
+            overflow-y: auto;
+            padding: var(--slide-padding);
+            padding-top: calc(var(--slide-padding) * 2 + var(--nav-height) + 0.5rem);
+        }
+
+        @media (max-height: 700px) {
+            :root {
+                --slide-padding: clamp(0.75rem, 3vw, 2rem);
+                --title-size: clamp(1.5rem, 4.5vw, 2.5rem);
+                --h2-size: clamp(1rem, 3vw, 1.75rem);
+            }
+        }
+
+        @media (max-height: 600px) {
+            :root {
+                --slide-padding: clamp(0.5rem, 2.5vw, 1.5rem);
+                --title-size: clamp(1.1rem, 4vw, 2rem);
+                --body-size: clamp(0.7rem, 1.2vw, 0.95rem);
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --title-size: clamp(1.25rem, 7vw, 2.5rem);
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.2s !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--text-primary);
+            position: relative;
+            isolation: isolate;
+        }
+
+        a { color: inherit; text-decoration: none; }
+        button { font: inherit; }
+
+        .ambient-stage {
+            position: fixed; inset: 0;
+            pointer-events: none; z-index: -1;
+            overflow: hidden;
+            background: #000000;
+        }
+
+        .cyber-grid-canvas,
+        .cyber-grid-fade,
+        .cyber-grid-vignette,
+        .cyber-grid-scanlines {
+            position: absolute; inset: 0;
+        }
+
+        .cyber-grid-canvas {
+            width: 100%; height: 100%;
+            display: block;
+            filter: drop-shadow(0 0 4px rgba(0, 229, 153, 0.16));
+            opacity: 1;
+            -webkit-mask-image: linear-gradient(180deg, transparent 0%, transparent 38%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.82) 68%, #ffffff 100%);
+            mask-image: linear-gradient(180deg, transparent 0%, transparent 38%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.82) 68%, #ffffff 100%);
+        }
+
+        .cyber-grid-fade {
+            background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.98) 36%, rgba(0,0,0,0.84) 48%, rgba(0,0,0,0.4) 62%, rgba(0,0,0,0.08) 74%, transparent 100%);
+        }
+
+        .cyber-grid-vignette {
+            background: radial-gradient(circle at 50% 54%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.1) 34%, rgba(0,0,0,0.42) 68%, rgba(0,0,0,0.78) 100%), radial-gradient(circle at 50% 54%, rgba(255,255,255,0.035), transparent 24%);
+        }
+
+        .cyber-grid-scanlines {
+            opacity: 0.03;
+            background: repeating-linear-gradient(180deg, rgba(255,255,255,0.8) 0, rgba(255,255,255,0.8) 1px, transparent 1px, transparent 4px);
+            mix-blend-mode: screen;
+            animation: gridScanlineDrift 12s linear infinite;
+        }
+
+        @keyframes gridScanlineDrift {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        .progress-bar {
+            position: fixed; inset: 0 auto auto 0;
+            width: 0; height: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-blue));
+            box-shadow: 0 0 28px rgba(125, 247, 255, 0.45);
+            z-index: 30;
+            transition: width 220ms ease-out;
+        }
+
+        .top-nav {
+            position: fixed; inset: 0 0 auto 0;
+            display: flex; align-items: center;
+            justify-content: center;
+            height: var(--nav-height);
+            padding: 0 clamp(1rem, 2vw, 1.5rem);
+            border-bottom: 1px solid var(--line-strong);
+            background: rgba(0, 0, 0, 0.72);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            z-index: 40;
+        }
+
+        .top-nav-inner {
+            width: min(100%, 1400px);
+            display: flex; align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .brand-mark {
+            display: flex; align-items: center;
+            gap: 0.7rem;
+            min-width: max-content;
+        }
+
+        .brand-dot {
+            width: 0.56rem; height: 0.56rem;
+            border-radius: 0.1rem;
+            background: var(--accent);
+        }
+
+        .brand-copy {
+            font-size: 0.86rem; font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--text-primary);
+        }
+
+        .nav-links {
+            display: flex; align-items: center;
+            gap: clamp(1rem, 1.4vw, 1.8rem);
+            flex: 1; min-width: 0;
+            justify-content: center;
+        }
+
+        .nav-link {
+            font-size: 0.78rem; font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--accent);
+        }
+
+        .nav-actions {
+            display: flex; align-items: center;
+            gap: 1rem;
+            min-width: max-content;
+        }
+
+        .hero-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+            gap: 1rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--forcefield-stroke-accent);
+            border-radius: 100px;
+            font-size: var(--small-size);
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: var(--title-size);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title .accent-text {
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            font-size: var(--hero-subtitle, 1.2rem);
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-num {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .hero-stat-label {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+        }
+
+        .section-label {
+            font-size: var(--small-size);
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: var(--h2-size);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+            .nav-links { display: none; }
+        }
+
+        .info-panel {
+            background: var(--bg-panel-strong);
+            border: 1px solid var(--line-soft);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+        }
+
+        .info-panel h3 {
+            font-size: var(--h3-size);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .info-row {
+            display: flex;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--line-soft);
+            font-size: var(--body-size);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+            min-width: 100px;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: var(--text-primary);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--line-soft);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.5rem;
+            top: 0.4rem;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: 2px solid var(--bg-primary);
+        }
+
+        .timeline-date {
+            font-size: var(--small-size);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .timeline-title {
+            font-size: var(--body-size);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 0.2rem 0;
+        }
+
+        .timeline-sub {
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        .timeline-desc {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            margin-top: 0.3rem;
+            line-height: 1.5;
+        }
+
+        .skill-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-group-title {
+            font-size: var(--body-size);
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            padding: 0.3rem 0.8rem;
+            background: var(--accent-soft);
+            border: 1px solid var(--forcefield-stroke-accent);
+            border-radius: 100px;
+            font-size: var(--small-size);
+            color: var(--text-secondary);
+        }
+
+        .skill-tag:hover {
+            color: var(--accent);
+            background: rgba(0, 229, 153, 0.15);
+        }
+
+        .pub-item {
+            padding: 1rem;
+            background: var(--bg-panel);
+            border: 1px solid var(--line-soft);
+            border-radius: var(--radius-md);
+            margin-bottom: 0.8rem;
+            font-size: var(--small-size);
+            line-height: 1.6;
+        }
+
+        .pub-item .pub-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .pub-item .pub-source {
+            color: var(--text-secondary);
+        }
+
+        .pub-item .pub-year {
+            display: inline-block;
+            padding: 0.1rem 0.5rem;
+            background: var(--accent-soft);
+            border-radius: 4px;
+            font-size: 0.7rem;
+            color: var(--accent);
+            margin-right: 0.5rem;
+        }
+
+        .award-item {
+            display: flex;
+            gap: 1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--line-soft);
+            font-size: var(--small-size);
+        }
+
+        .award-year {
+            min-width: 60px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        .award-desc {
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .contact-section {
+            text-align: center;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .contact-card {
+            background: var(--bg-panel-strong);
+            border: 1px solid var(--line-soft);
+            border-radius: var(--radius-md);
+            padding: 1.5rem;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-card:hover {
+            border-color: var(--accent);
+        }
+
+        .contact-card .contact-label {
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-card .contact-value {
+            font-size: var(--body-size);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .footer-note {
+            margin-top: 2rem;
+            font-size: var(--small-size);
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="ambient-stage">
+        <canvas class="cyber-grid-canvas" id="gridCanvas"></canvas>
+        <div class="cyber-grid-fade"></div>
+        <div class="cyber-grid-vignette"></div>
+        <div class="cyber-grid-scanlines"></div>
+    </div>
+
+    <div class="progress-bar" id="progressBar"></div>
+
+    <nav class="top-nav">
+        <div class="top-nav-inner">
+            <div class="brand-mark">
+                <span class="brand-dot"></span>
+                <span class="brand-copy">赵尔波</span>
+            </div>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">首页</a>
+                <a href="#about" class="nav-link">关于</a>
+                <a href="#experience" class="nav-link">经历</a>
+                <a href="#skills" class="nav-link">技能</a>
+                <a href="#research" class="nav-link">科研</a>
+                <a href="#publications" class="nav-link">论文</a>
+                <a href="#contact" class="nav-link">联系</a>
+            </div>
+            <div class="nav-actions"></div>
+        </div>
+    </nav>
+
+    <section class="slide" id="home">
+        <div class="slide-content">
+            <div class="hero-section">
+                <div class="hero-badge">AI · 医疗信息化 · 智能系统</div>
+                <h1 class="hero-title">
+                    赵尔波<br>
+                    <span class="accent-text">复合型研究人才</span>
+                </h1>
+                <p class="hero-sub">
+                    系统科学博士 | 信息科副科长 | 助理研究员<br>
+                    专注于人工智能、医疗信息化、智能机器人与多主体系统研究
+                </p>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-num">12+</div>
+                        <div class="hero-stat-label">年研发经验</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num">10+</div>
+                        <div class="hero-stat-label">学术论文</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num">6</div>
+                        <div class="hero-stat-label">发明专利</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-num">3</div>
+                        <div class="hero-stat-label">科研项目</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="about">
+        <div class="slide-content">
+            <div class="content-wrapper">
+                <div class="section-label">// 关于我</div>
+                <h2 class="section-title">About</h2>
+                <div class="grid-2col">
+                    <div class="info-panel">
+                        <h3>基本信息</h3>
+                        <div class="info-row"><span class="info-label">姓名</span><span class="info-value">赵尔波</span></div>
+                        <div class="info-row"><span class="info-label">性别</span><span class="info-value">男</span></div>
+                        <div class="info-row"><span class="info-label">出生日期</span><span class="info-value">1982年6月</span></div>
+                        <div class="info-row"><span class="info-label">职称</span><span class="info-value">助理研究员</span></div>
+                        <div class="info-row"><span class="info-label">职务</span><span class="info-value">信息科副科长</span></div>
+                        <div class="info-row"><span class="info-label">电话</span><span class="info-value">13552076175</span></div>
+                        <div class="info-row"><span class="info-label">邮箱</span><span class="info-value">erbozhao126@126.com</span></div>
+                        <div class="info-row"><span class="info-label">政治面貌</span><span class="info-value">中共党员</span></div>
+                    </div>
+                    <div class="info-panel">
+                        <h3>教育背景</h3>
+                        <div class="info-row"><span class="info-label">2008-2011</span><span class="info-value">北京师范大学 · 系统理论（人工智能方向）博士</span></div>
+                        <div class="info-row"><span class="info-label">2005-2008</span><span class="info-value">北京师范大学 · 系统分析与集成 硕士</span></div>
+                        <div class="info-row"><span class="info-label">2000-2004</span><span class="info-value">华北电力大学 · 电力工学/经济学 学士</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="experience">
+        <div class="slide-content">
+            <div class="content-wrapper">
+                <div class="section-label">// 工作经历</div>
+                <h2 class="section-title">Career Timeline</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">2019.09 — 至今</div>
+                        <div class="timeline-title">信息科副科长 · 桂林医科大学第一附属医院</div>
+                        <div class="timeline-desc">医院信息化建设管理、GCP远程监查安全系统设计与实践、医学信息资源建设与管理</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2017.12 — 2019.08</div>
+                        <div class="timeline-title">研究员 · 海航科技集团研究院</div>
+                        <div class="timeline-desc">自动驾驶算法研发（基于百度ApolloAuto）、冷链物流三维装箱算法、同城物流路径优化</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2016.09 — 2017.10</div>
+                        <div class="timeline-title">副研究员/研究员 · 北京理工大学智能机器人与系统高精尖创新中心</div>
+                        <div class="timeline-desc">人机交互与AI算法创新、智能外骨骼康复机器人、服务机器人导航算法</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2015.04 — 2016.04</div>
+                        <div class="timeline-title">高级研发工程师 · 上海技美科技股份有限公司</div>
+                        <div class="timeline-desc">工业6轴机器人智能交互设计、机器人运动学习与控制算法、RFID工具管理系统</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2013.07 — 2015.04</div>
+                        <div class="timeline-title">战略研发工程师 · 海尔集团</div>
+                        <div class="timeline-desc">可穿戴设备及智能家电研发（儿童手表、智能酒柜）、定位融合算法、PID算法</div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2011.07 — 2013.07</div>
+                        <div class="timeline-title">通信电子工程师 · 北京北广科技股份有限公司</div>
+                        <div class="timeline-desc">数字音频广播CDR编码调制器研发、信号处理算法、国家专利2项</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="skills">
+        <div class="slide-content">
+            <div class="content-wrapper">
+                <div class="section-label">// 专业技能</div>
+                <h2 class="section-title">Skills & Expertise</h2>
+                <div class="grid-2col">
+                    <div>
+                        <div class="skill-group">
+                            <div class="skill-group-title">算法与建模</div>
+                            <div class="skill-tags">
+                                <span class="skill-tag">机器学习</span>
+                                <span class="skill-tag">深度学习</span>
+                                <span class="skill-tag">SVM</span>
+                                <span class="skill-tag">遗传算法</span>
+                                <span class="skill-tag">CNN/DNN</span>
+                                <span class="skill-tag">LSTM</span>
+                                <span class="skill-tag">GAN</span>
+                                <span class="skill-tag">随机森林</span>
+                                <span class="skill-tag">信号处理</span>
+                                <span class="skill-tag">特征提取</span>
+                                <span class="skill-tag">模式识别</span>
+                                <span class="skill-tag">PID控制</span>
+                            </div>
+                        </div>
+                        <div class="skill-group">
+                            <div class="skill-group-title">开发工具</div>
+                            <div class="skill-tags">
+                                <span class="skill-tag">TensorFlow</span>
+                                <span class="skill-tag">PyTorch</span>
+                                <span class="skill-tag">Caffe</span>
+                                <span class="skill-tag">OpenCV</span>
+                                <span class="skill-tag">Keras</span>
+                                <span class="skill-tag">Theano</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="skill-group">
+                            <div class="skill-group-title">编程语言</div>
+                            <div class="skill-tags">
+                                <span class="skill-tag">C/C++</span>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">Java</span>
+                                <span class="skill-tag">Matlab</span>
+                                <span class="skill-tag">VHDL</span>
+                                <span class="skill-tag">Labview</span>
+                                <span class="skill-tag">SQL</span>
+                            </div>
+                        </div>
+                        <div class="skill-group">
+                            <div class="skill-group-title">硬件与嵌入式</div>
+                            <div class="skill-tags">
+                                <span class="skill-tag">ARM/单片机</span>
+                                <span class="skill-tag">DSP/FPGA</span>
+                                <span class="skill-tag">RFID</span>
+                                <span class="skill-tag">电机驱动</span>
+                                <span class="skill-tag">机器视觉</span>
+                                <span class="skill-tag">人机交互</span>
+                            </div>
+                        </div>
+                        <div class="skill-group">
+                            <div class="skill-group-title">专业领域</div>
+                            <div class="skill-tags">
+                                <span class="skill-tag">医院信息化</span>
+                                <span class="skill-tag">GCP远程监查</span>
+                                <span class="skill-tag">医学信息管理</span>
+                                <span class="skill-tag">智能机器人</span>
+                                <span class="skill-tag">物联网</span>
+                                <span class="skill-tag">大数据</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="research">
+        <div class="slide-content">
+            <div class="content-wrapper">
+                <div class="section-label">// 科研项目</div>
+                <h2 class="section-title">Research Projects</h2>
+                <div class="info-panel" style="margin-bottom:1.5rem;">
+                    <h3>参与项目</h3>
+                    <div class="pub-item">
+                        <span class="pub-year">2026-2029</span>
+                        <span class="pub-title">国家自然科学基金（地区科学基金）82560095</span><br>
+                        <span class="pub-source">光老化聚甲基丙烯酸甲酯微纳米塑料经"肠-肝-血管轴"引起脂质代谢紊乱诱导动脉粥样硬化机制研究 · 32万元 · 在研</span>
+                    </div>
+                    <div class="pub-item">
+                        <span class="pub-year">2026-2029</span>
+                        <span class="pub-title">广西重点研发计划 桂科FN2600640001</span><br>
+                        <span class="pub-source">肝细胞癌免疫治疗效果提升关键技术研究与应用示范 · 376万元 · 在研</span>
+                    </div>
+                    <div class="pub-item">
+                        <span class="pub-year">2024-2026</span>
+                        <span class="pub-title">广西学位与研究生教育改革课题 JGY2024226</span><br>
+                        <span class="pub-source">多模态生成式人工智能在图书情报研究生教学创新应用及实践研究 · 6万元 · 在研</span>
+                    </div>
+                </div>
+                <div class="info-panel">
+                    <h3>获奖情况</h3>
+                    <div class="award-item">
+                        <span class="award-year">2023</span>
+                        <span class="award-desc">GCP远程监查安全设计与实践 · 桂林医学院科技活动月暨第二届临床医学院学术壁报比赛优胜奖</span>
+                    </div>
+                    <div class="award-item">
+                        <span class="award-year">2022</span>
+                        <span class="award-desc">区块链技术应用于电子病历记录的需求调查及影响因素分析 · 桂林医学院大创项目优秀奖</span>
+                    </div>
+                    <div class="award-item">
+                        <span class="award-year">2022</span>
+                        <span class="award-desc">颐养宝——穿戴式智能护理机器人 · 第八届"互联网+"大赛广西赛区金奖</span>
+                    </div>
+                    <div class="award-item">
+                        <span class="award-year">2019</span>
+                        <span class="award-desc">TRIZ超系统进化与PDCA相结合提升门诊患者体验 · 中国创新方法大赛广西赛区优秀奖</span>
+                    </div>
+                    <div class="award-item">
+                        <span class="award-year">2010</span>
+                        <span class="award-desc">社会实践奖学金（Top5%）· "合利屋"奖学金（Top5%）</span>
+                    </div>
+                    <div class="award-item">
+                        <span class="award-year">2009</span>
+                        <span class="award-desc">北京师范大学管理学院学术优胜奖 · 二等奖学金（Top10%）</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="publications">
+        <div class="slide-content">
+            <div class="content-wrapper">
+                <div class="section-label">// 学术论文 & 专利</div>
+                <h2 class="section-title">Publications & Patents</h2>
+                <div class="grid-2col">
+                    <div class="info-panel">
+                        <h3>代表性论文</h3>
+                        <div class="pub-item">
+                            <span class="pub-year">2025</span>
+                            <span class="pub-title">A clinical study exploring the prediction of microvascular invasion in hepatocellular carcinoma through combined enhanced CT and MRI radiomics</span><br>
+                            <span class="pub-source">Plos One, 2025, 20(1) · 共同作者</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2023</span>
+                            <span class="pub-title">医院部署GCP远程监查的多级安全防护设计与实践</span><br>
+                            <span class="pub-source">中国卫生信息管理杂志, 2023, 20(05): 709-714 · 第一作者</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2013</span>
+                            <span class="pub-title">The Impacts of Information-Sharing Mechanisms on Spatial Market Formation Based on Agent-Based Modeling</span><br>
+                            <span class="pub-source">PLoS ONE, 2013, 8(3) · 共同作者</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2011</span>
+                            <span class="pub-title">Scaling Behavior of Time Series and an Empirical Indication to Financial Prediction</span><br>
+                            <span class="pub-source">ICIS 2011, pp.126-131 · 第一作者</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2010</span>
+                            <span class="pub-title">Analyze Long & Mid-term Trends of Stock with Genetic Programming on Moving Average and Turning Points</span><br>
+                            <span class="pub-source">ICACC 2010, Vol.3, 87-91 · 第一作者</span>
+                        </div>
+                    </div>
+                    <div class="info-panel">
+                        <h3>发明专利</h3>
+                        <div class="pub-item">
+                            <span class="pub-year">2015</span>
+                            <span class="pub-title">一种温差发电移动终端</span><br>
+                            <span class="pub-source">CN201520103256.5 · 实用新型 · 独立发明人</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2015</span>
+                            <span class="pub-title">一种空调定位送风方法</span><br>
+                            <span class="pub-source">CN201510118858.2 · 发明专利 · 共同发明人</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2014</span>
+                            <span class="pub-title">控制电视的方法、蓝牙耳机、电视和电视控制系统</span><br>
+                            <span class="pub-source">CN201410718867.0 · 发明专利 · 共同发明人</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2014</span>
+                            <span class="pub-title">摄像头聚焦控制方法、摄像设备和可穿戴式智能终端</span><br>
+                            <span class="pub-source">CN201410624817.6 · 发明专利 · 共同发明人</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2012</span>
+                            <span class="pub-title">数字音频广播子载波矩阵处理方法和装置</span><br>
+                            <span class="pub-source">CN201210544811.9 · 发明专利 · 共同发明人</span>
+                        </div>
+                        <div class="pub-item">
+                            <span class="pub-year">2012</span>
+                            <span class="pub-title">数字音频广播系统中信标信号的处理装置</span><br>
+                            <span class="pub-source">CN201220652129.7 · 实用新型 · 共同发明人</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="slide" id="contact">
+        <div class="slide-content">
+            <div class="content-wrapper contact-section">
+                <div class="section-label">// 联系方式</div>
+                <h2 class="section-title">Contact</h2>
+                <div class="contact-grid">
+                    <div class="contact-card">
+                        <div class="contact-label">电话</div>
+                        <div class="contact-value">13552076175</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-label">邮箱</div>
+                        <div class="contact-value">erbozhao126@126.com</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-label">工作单位</div>
+                        <div class="contact-value">桂林医科大学第一附属医院 信息科</div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-label">地址</div>
+                        <div class="contact-value">广西桂林市</div>
+                    </div>
+                </div>
+                <div class="footer-note">
+                    &copy; 2026 赵尔波 · 个人简历网站
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Cyber grid animation
+        const canvas = document.getElementById('gridCanvas');
+        const ctx = canvas.getContext('2d');
+        let animId;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function drawGrid() {
+            const w = canvas.width;
+            const h = canvas.height;
+            const spacing = 40;
+
+            ctx.clearRect(0, 0, w, h);
+            ctx.strokeStyle = 'rgba(0, 229, 153, 0.08)';
+            ctx.lineWidth = 1;
+
+            for (let x = 0; x <= w; x += spacing) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, h);
+                ctx.stroke();
+            }
+            for (let y = 0; y <= h; y += spacing) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+                ctx.stroke();
+            }
+
+            // Animated dots at intersections
+            const time = Date.now() / 2000;
+            for (let x = spacing; x < w; x += spacing * 2) {
+                for (let y = spacing; y < h; y += spacing * 2) {
+                    const pulse = Math.sin(time + x * 0.01 + y * 0.01) * 0.5 + 0.5;
+                    ctx.fillStyle = `rgba(0, 229, 153, ${pulse * 0.15})`;
+                    ctx.beginPath();
+                    ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            animId = requestAnimationFrame(drawGrid);
+        }
+
+        drawGrid();
+
+        // Progress bar
+        const progressBar = document.getElementById('progressBar');
+        document.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            progressBar.style.width = progress + '%';
+        });
+
+        // Nav link active state
+        const navLinks = document.querySelectorAll('.nav-link');
+        const slides = document.querySelectorAll('.slide');
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                    });
+                }
+            });
+        }, { threshold: 0.5 });
+
+        slides.forEach(slide => observer.observe(slide));
+    </script>
+</body>
+</html>
